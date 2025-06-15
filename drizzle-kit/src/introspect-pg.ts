@@ -56,6 +56,7 @@ const pgImportsList = new Set([
 	'doublePrecision',
 	'uuid',
 	'vector',
+	'halfvec',
 	'point',
 	'line',
 	'geometry',
@@ -365,6 +366,7 @@ export const schemaToTypeScript = (schema: PgSchemaInternal, casing: Casing) => 
 					patched = patched.startsWith('time(') ? 'time' : patched;
 					patched = patched.startsWith('timestamp(') ? 'timestamp' : patched;
 					patched = patched.startsWith('vector(') ? 'vector' : patched;
+					patched = patched.startsWith('halfvec(') ? 'halfvec' : patched;
 					patched = patched.startsWith('geometry(') ? 'geometry' : patched;
 					return patched;
 				})
@@ -826,6 +828,10 @@ const mapDefault = (
 		return typeof defaultValue !== 'undefined' ? `.default(${mapColumnDefault(defaultValue, isExpression)})` : '';
 	}
 
+	if (lowered.startsWith('halfvec')) {
+		return typeof defaultValue !== 'undefined' ? `.default(${mapColumnDefault(defaultValue, isExpression)})` : '';
+	}
+
 	if (lowered.startsWith('char')) {
 		return typeof defaultValue !== 'undefined'
 			? `.default(${mapColumnDefault(unescapeSingleQuotes(defaultValue, true), isExpression)})`
@@ -1077,6 +1083,19 @@ const column = (
 			} })`;
 		} else {
 			out = `${withCasing(name, casing)}: vector(${dbColumnName({ name, casing })})`;
+		}
+
+		return out;
+	}
+
+	if (lowered.startsWith('halfvec')) {
+		let out: string;
+		if (lowered.length !== 7) {
+			out = `${withCasing(name, casing)}: halfvec(${dbColumnName({ name, casing, withMode: true })}{ dimensions: ${
+				lowered.substring(8, lowered.length - 1)
+			} })`;
+		} else {
+			out = `${withCasing(name, casing)}: halfvec(${dbColumnName({ name, casing })})`;
 		}
 
 		return out;

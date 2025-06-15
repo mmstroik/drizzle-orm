@@ -135,6 +135,7 @@ const parseType = (schemaPrefix: string, type: string) => {
 		'interval minute to second',
 		'char',
 		'vector',
+		'halfvec',
 		'geometry',
 	];
 	const arrayDefinitionRegex = /\[\d*(?:\[\d*\])*\]/g;
