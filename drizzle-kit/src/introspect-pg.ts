@@ -398,6 +398,7 @@ export const schemaToTypeScript = (schema: PgSchemaInternal, casing: Casing) => 
 					patched = patched.startsWith('time(') ? 'time' : patched;
 					patched = patched.startsWith('timestamp(') ? 'timestamp' : patched;
 					patched = patched.startsWith('vector(') ? 'vector' : patched;
+					patched = patched.startsWith('halfvec(') ? 'halfvec' : patched;
 					patched = patched.startsWith('geometry(') ? 'geometry' : patched;
 					return patched;
 				})
