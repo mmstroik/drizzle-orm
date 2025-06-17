@@ -1319,7 +1319,7 @@ WHERE
 							type:
 								// filter vectors, but in future we should filter any extension that was installed by user
 								columnAdditionalDT === 'USER-DEFINED'
-									&& !['vector', 'geometry'].includes(enumType)
+									&& !['vector', 'halfvec', 'geometry'].includes(enumType)
 									? enumType
 									: columnTypeMapped,
 							typeSchema: undefined,
